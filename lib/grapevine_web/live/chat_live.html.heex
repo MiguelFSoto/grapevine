@@ -1,1 +1,15 @@
 <h1> chat </h1>
+<div class="w-50 mb-4">
+  <%= for msg <- Enum.reverse @messages do %>
+    <p><span class="font-semibold"><%= msg %></span></p>
+  <% end %>
+  <%!-- <p> <%= @messages %> </p> --%>
+</div>
+<.form phx-submit="send_message">
+    <input type="text" name="msg" required />
+    <%= for valMsg <- @messages do %>
+        <%!-- <label><%= valMsg %></label> --%>
+        <input type="hidden" name="messages[]" value={valMsg}>
+    <% end %>
+    <button>Save</button>
+</.form>
