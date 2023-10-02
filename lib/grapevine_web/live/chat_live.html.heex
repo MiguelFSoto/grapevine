@@ -1,8 +1,8 @@
 <h1> chat </h1>
 <div class="w-50 mb-4">
   <%= for msg <- @messages do %>
-    <p><%= msg.sender%>:
-    <span class="font-semibold"><%= msg.content %></span></p>
+    <p><span class="font-semibold"><%= msg.sender%>:</span>
+    <span><%= msg.content %></span></p>
   <% end %>
   <%!-- <p> <%= @messages %> </p> --%>
 </div>
