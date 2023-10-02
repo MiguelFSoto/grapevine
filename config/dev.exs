@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :grapevine, Grapevine.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("DB_USERNAME"),
+  password: System.get_env("DB_PASS"),
   hostname: "localhost",
   database: "grapevine_dev",
   stacktrace: true,
