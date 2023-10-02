@@ -1,4 +1,4 @@
-defmodule Grapevine.Message do
+defmodule Grapevine.Messages.Message do
   use Ecto.Schema
   import Ecto.Changeset
 

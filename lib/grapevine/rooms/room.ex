@@ -1,4 +1,4 @@
-defmodule Grapevine.Room do
+defmodule Grapevine.Rooms.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
