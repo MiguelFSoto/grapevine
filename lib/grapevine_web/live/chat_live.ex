@@ -1,7 +1,6 @@
 defmodule GrapevineWeb.ChatLive do
   use GrapevineWeb, :live_view
   alias Grapevine.Messages
-  import Ecto.Query
 
   def mount(_params, _session, socket) do
     fullMsgList = Messages.message_list
