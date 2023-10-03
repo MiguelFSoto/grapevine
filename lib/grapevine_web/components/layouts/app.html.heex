@@ -1,60 +1,61 @@
-<header class="px-4 sm:px-6 lg:px-8 bg-teal-200">
-  <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm bg-teal-200">
-    <div class="flex items-center gap-4">
-      <a href="/">
-        <img src={~p"/images/logo.png"} width="36" />
-      </a>
-      <p class="rounded-full px-2 font-medium leading-6">
-          Grapevine
-      </p>
+<div class="min-h-screen max-h-screen flex flex-col overflow-hidden">
+  <header class="flex-1 px-4 sm:px-6 lg:px-8 bg-teal-200 border-b border-zinc-400">
+    <div class="flex items-center justify-between border-zinc-100 py-3 text-sm bg-teal-200">
+      <div class="flex items-center gap-4">
+        <a href="/">
+          <img src={~p"/images/logo.png"} width="36" />
+        </a>
+        <p class="rounded-full px-2 font-medium leading-6">
+            Grapevine
+        </p>
+      </div>
+      <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
+        <a href="https://github.com/miguelfsoto/grapevine" class="hover:text-zinc-700">
+          GitHub</a>
+        <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+        <%= if @current_user do %>
+          <li class="text-[0.8125rem] leading-6 text-zinc-900">
+            <%= @current_user.email %>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/settings"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Settings
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/log_out"}
+              method="delete"
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Log out
+            </.link>
+          </li>
+        <% else %>
+          <li>
+            <.link
+              href={~p"/users/register"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Register
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/log_in"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Log in
+            </.link>
+          </li>
+        <% end %>
+      </ul>
+      </div>
     </div>
-    <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
-      <a href="https://github.com/miguelfsoto/grapevine" class="hover:text-zinc-700">
-        GitHub</a>
-      <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-      <%= if @current_user do %>
-        <li class="text-[0.8125rem] leading-6 text-zinc-900">
-          <%= @current_user.email %>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/settings"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Settings
-          </.link>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/log_out"}
-            method="delete"
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Log out
-          </.link>
-        </li>
-      <% else %>
-        <li>
-          <.link
-            href={~p"/users/register"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Register
-          </.link>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/log_in"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-          >
-            Log in
-          </.link>
-        </li>
-      <% end %>
-    </ul>
-    </div>
-  </div>
-</header>
+  </header>
 <%!-- <main class="px-4 py-20 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-2xl">
     <.flash_group flash={@flash} />
@@ -62,7 +63,9 @@
   </div>
 </main> --%>
 
-<div class="mx-auto px-10 py-4">
-    <.flash_group flash={@flash} />
-    <%= @inner_content %>
+
+  <div class="relative flex-grow">
+      <.flash_group flash={@flash} />
+      <%= @inner_content %>
+  </div>
 </div>
