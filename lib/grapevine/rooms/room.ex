@@ -15,4 +15,9 @@ defmodule Grapevine.Rooms.Room do
     |> cast(attrs, [:name, :members])
     |> validate_required([:name, :members])
   end
+
+  def member_changeset(room, attrs) do
+    room
+    |> cast(attrs, [:members])
+  end
 end

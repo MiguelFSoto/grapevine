@@ -17,9 +17,11 @@ defmodule Grapevine.Application do
       # Start Finch
       {Finch, name: Grapevine.Finch},
       # Start the Endpoint (http/https)
-      GrapevineWeb.Endpoint
+      GrapevineWeb.Endpoint,
       # Start a worker by calling: Grapevine.Worker.start_link(arg)
       # {Grapevine.Worker, arg}
+      Grapevine.Presence,
+      Grapevine.MessageServer
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -1,17 +1,29 @@
-<h1> chat </h1>
-<div class="w-50 mb-4">
-  <%= for msg <- @messages do %>
-    <p><%= msg.sender%>:
-    <span class="font-semibold"><%= msg.content %></span></p>
-  <% end %>
-  <%!-- <p> <%= @messages %> </p> --%>
+<div class="divide-x divide-zinc-500 grid grid-rows-10 grid-cols-10 grid-flow-col relative flex-grow">
+  <div class="row-span-10 col-span-3 border-b">
+    <h1 class="px-3 py-2 font-semibold">Rooms</h1>
+    <div class="px-3">
+      Room <%= @session_id %>
+    </div>
+  </div>
+
+  <div class="col-span-10 max-h-screen relative flex-grow min-w-full">
+    <div class="row-span-9 h-5/6 overflow-y-scroll relative flex-grow border-b border-zinc-500 min-w-full">
+      <%= for msg <- @messages do %>
+        <p class="px-3 py-2 gap-y-4 border-b snap-center" align="justify"><span class="font-semibold"><%= msg.sender%>:</span><br>
+        <span><%= msg.content %></span></p>
+      <% end %>
+      <%!-- <p> <%= @messages %> </p> --%>
+    </div>
+    <div class="py-2 row-span-1 flex self-end h-1/6">
+      <.form class ="px-3" phx-submit="send_message">
+          <input class="px-3 py-2" type="text" name="msg" required />
+          <input type="hidden" name="sender" value={@current_user.email}>
+          <%!-- <%= for valMsg <- @messages do %>
+              <label><%= valMsg %></label>
+              <input type="hidden" name="messages[]" value={valMsg}>
+          <% end %> --%>
+          <button class="bg-indigo-100 rounded-md self-end">Send</button>
+      </.form>
+    </div>
+  </div>
 </div>
-<.form phx-submit="send_message">
-    <input type="text" name="msg" required />
-    <input type="hidden" name="sender" value={@current_user.email}>
-    <%!-- <%= for valMsg <- @messages do %>
-        <label><%= valMsg %></label>
-        <input type="hidden" name="messages[]" value={valMsg}>
-    <% end %> --%>
-    <button>Save</button>
-</.form>
