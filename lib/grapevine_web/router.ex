@@ -2,6 +2,7 @@ defmodule GrapevineWeb.Router do
   use GrapevineWeb, :router
 
   import GrapevineWeb.UserAuth
+  import GrapevineWeb.AssignSession
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -11,6 +12,7 @@ defmodule GrapevineWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug GrapevineWeb.AssignSession
   end
 
   pipeline :api do

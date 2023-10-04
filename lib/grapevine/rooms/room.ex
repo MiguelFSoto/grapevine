@@ -19,4 +19,5 @@ defmodule Grapevine.Rooms.Room do
   def member_changeset(room, attrs) do
     room
     |> cast(attrs, [:members])
+  end
 end
