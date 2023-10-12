@@ -11,18 +11,18 @@ defmodule Grapevine.Rooms do
   @doc """
   Returns a list of rooms that a given user is part of
   """
-  # def user_rooms(mail) do
-  #   query = from(Room, where:[Enum.member?(:members, mail)], select: [:name])
-  #   Repo.all(query)
-  # end
+  def user_rooms(mail) do
+    query = from(r in Room, where: ^mail in r.members, select: [:name])
+    Repo.all(query)
+  end
 
   @doc """
   Returns a list of the users in a given room
   """
-  # def room_users(room) do
-  #   query = from(Room, where:[name: room], select: [:members])
-  #   Repo.all(query)
-  # end
+  def room_users(room) do
+    query = from(Room, where: [name: ^room], select: [:members])
+    Repo.all(query)
+  end
 
   @doc """
   Saves a sent message
