@@ -1,6 +1,7 @@
 defmodule GrapevineWeb.ChatLive do
   use GrapevineWeb, :live_view
   alias Grapevine.Messages
+  alias Grapevine.Rooms
   alias Grapevine.Presence
   alias Grapevine.MessageServer
 
@@ -16,21 +17,43 @@ defmodule GrapevineWeb.ChatLive do
     end
 
     fullMsgList = Messages.message_list
-    defParams = %{messages: fullMsgList, msg: "", session_id: session_id}
+    fullRoomList = Rooms.room_list
+    defParams = %{
+      messages: [],
+      msg: "",
+      session_id: session_id,
+      rooms: fullRoomList,
+      activeRoom: ""
+    }
     {:ok, assign(socket, defParams)}
-    # put_resp_cookie(socket, "messages", [], sign: true)
   end
 
   def handle_event("send_message", %{"sender" => sender, "msg" => msgSent}, socket) do
     # %{"messages" => exMessages, "msg" => msgSent} = params
-    %{content: msgSent, sender: sender}
+    activeRoom = socket.assigns.activeRoom
+    %{ content: msgSent, sender: sender, room: activeRoom }
     |> Messages.save_message
-    fullMsgList = Messages.message_list
-    nextParams = %{ messages: fullMsgList, msg: "" }
+    fullMsgList = Rooms.room_messages(activeRoom)
+    # nextParams = %{ messages: fullMsgList, msg: "" }
 
     MessageServer.set_messages(socket.assigns.session_id, fullMsgList)
     # {:noreply, assign(socket, nextParams)}
     {:noreply, socket}
+  end
+
+  def handle_event("create_room", %{"name" => name, "members" => members}, socket) do
+    %{name: name, members: [members]}
+    |> Rooms.create_room
+
+    fullRoomList = Rooms.room_list
+    nextParams = %{ rooms: fullRoomList, name: "" }
+    {:noreply, assign(socket, nextParams)}
+  end
+
+  def handle_event("select_room", %{"name" => name}, socket) do
+    roomMessages = Rooms.room_messages(name)
+    nextParams = %{ activeRoom: name, messages: roomMessages }
+    {:noreply, assign(socket, nextParams)}
   end
 
   def handle_info({:updated_msg, messages}, socket) do

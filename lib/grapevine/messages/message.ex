@@ -5,6 +5,7 @@ defmodule Grapevine.Messages.Message do
   schema "messages" do
     field :content, :string
     field :sender, :string
+    field :room, :string
 
     timestamps()
   end
@@ -12,7 +13,7 @@ defmodule Grapevine.Messages.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:content, :sender])
-    |> validate_required([:content, :sender])
+    |> cast(attrs, [:content, :sender, :room])
+    |> validate_required([:content, :sender, :room])
   end
 end
