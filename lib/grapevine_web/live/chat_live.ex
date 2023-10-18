@@ -19,18 +19,21 @@ defmodule GrapevineWeb.ChatLive do
     fullMsgList = Messages.message_list
     fullRoomList = Rooms.room_list
     defParams = %{
-      messages: fullMsgList, msg: "",
+      messages: [],
+      msg: "",
       session_id: session_id,
-      rooms: fullRoomList
+      rooms: fullRoomList,
+      activeRoom: ""
     }
     {:ok, assign(socket, defParams)}
   end
 
   def handle_event("send_message", %{"sender" => sender, "msg" => msgSent}, socket) do
     # %{"messages" => exMessages, "msg" => msgSent} = params
-    %{content: msgSent, sender: sender}
+    activeRoom = socket.assigns.activeRoom
+    %{ content: msgSent, sender: sender, room: activeRoom }
     |> Messages.save_message
-    fullMsgList = Messages.message_list
+    fullMsgList = Rooms.room_messages(activeRoom)
     # nextParams = %{ messages: fullMsgList, msg: "" }
 
     MessageServer.set_messages(socket.assigns.session_id, fullMsgList)
@@ -39,15 +42,18 @@ defmodule GrapevineWeb.ChatLive do
   end
 
   def handle_event("create_room", %{"name" => name, "members" => members}, socket) do
-    # %{"messages" => exMessages, "msg" => msgSent} = params
     %{name: name, members: [members]}
     |> Rooms.create_room
+
     fullRoomList = Rooms.room_list
     nextParams = %{ rooms: fullRoomList, name: "" }
-
-    # MessageServer.set_messages(socket.assigns.session_id, fullMsgList)
     {:noreply, assign(socket, nextParams)}
-    # {:noreply, socket}
+  end
+
+  def handle_event("select_room", %{"name" => name}, socket) do
+    roomMessages = Rooms.room_messages(name)
+    nextParams = %{ activeRoom: name, messages: roomMessages }
+    {:noreply, assign(socket, nextParams)}
   end
 
   def handle_info({:updated_msg, messages}, socket) do

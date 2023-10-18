@@ -3,13 +3,15 @@
     <h1 class="px-3 py-2 font-semibold">Rooms</h1>
     <div class="px-3">
       <%= for room <- @rooms do %>
-        <p><%= room.name %></p>
+        <div phx-click="select_room" phx-value-name={room.name}>
+          <p><%= room.name %></p>
+        </div>
       <% end %>
     </div>
-    <div class="px-3">
-      <.form class ="px-3" phx-submit="create_room">
+    <div class="px-3 self-end">
+      <.form class ="" phx-submit="create_room">
           <input class="px-3 py-2" type="text" name="name" required />
-          <input type="hidden" name="members" value={[@current_user.email]}>
+          <input type="hidden" name="members" value={@current_user.email}>
           <button class="bg-indigo-100 rounded-md self-end">Create</button>
       </.form>
     </div>
@@ -26,7 +28,8 @@
       <.form class ="px-3" phx-submit="send_message">
           <input class="px-3 py-2" type="text" name="msg" required />
           <input type="hidden" name="sender" value={@current_user.email}>
-          <button class="bg-indigo-100 rounded-md self-end">Send</button>
+          <input type="hidden" name="room" value={@activeRoom}>
+          <button class="bg-indigo-100 rounded-md self-end">Send to <%= @activeRoom %></button>
       </.form>
     </div>
   </div>
