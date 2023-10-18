@@ -7,6 +7,15 @@ defmodule Grapevine.Rooms do
   alias Grapevine.Repo
 
   alias Grapevine.Rooms.Room
+  alias Grapevine.Messages.Message
+
+  @doc """
+  Returns a list of all rooms
+  """
+  def room_list do
+    query = from(Room, select: [:name])
+    Repo.all(query)
+  end
 
   @doc """
   Returns a list of rooms that a given user is part of
@@ -25,7 +34,15 @@ defmodule Grapevine.Rooms do
   end
 
   @doc """
-  Saves a sent message
+  Returns a list of the messages sent in a given room
+  """
+  def room_messages(room) do
+    query = from(Message, where: [room: ^room], select: [:content, :sender])
+    Repo.all(query)
+  end
+
+  @doc """
+  Saves a room
   """
   def create_room(attrs) do
     %Room{}

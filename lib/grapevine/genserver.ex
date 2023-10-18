@@ -13,7 +13,7 @@ defmodule Grapevine.MessageServer do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  def subscribe(session_id), do: Phoenix.PubSub.subscribe(PubSub, "message")
+  def subscribe(_session_id), do: Phoenix.PubSub.subscribe(PubSub, "message")
 
   def set_messages(session_id, messages) do
     GenServer.cast(__MODULE__, {:update_msg, session_id, messages})

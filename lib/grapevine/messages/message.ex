@@ -5,6 +5,7 @@ defmodule Grapevine.Messages.Message do
   schema "messages" do
     field :content, :string
     field :sender, :string
+    field :room, :string
 
     timestamps()
   end
