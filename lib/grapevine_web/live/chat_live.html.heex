@@ -1,5 +1,5 @@
-<div class="divide-x divide-zinc-500 grid grid-rows-10 grid-cols-10 grid-flow-col relative flex-grow">
-  <div class="row-span-10 col-span-3 border-b">
+<div class="divide-x divide-zinc-500 flex flex-row h-full w-full overflow-hidden">
+  <div class="w-2/12 h-full">
     <h1 class="px-3 py-2 font-semibold">Rooms</h1>
     <div class="px-3">
       <%= for room <- @rooms do %>
@@ -8,7 +8,7 @@
         </div>
       <% end %>
     </div>
-    <div class="px-3 self-end">
+    <div class="px-3">
       <.form class ="" phx-submit="create_room">
           <input class="px-3 py-2" type="text" name="name" required />
           <input type="hidden" name="members" value={@current_user.email}>
@@ -17,19 +17,19 @@
     </div>
   </div>
 
-  <div class="col-span-10 max-h-screen relative flex-grow min-w-full">
-    <div class="row-span-9 h-5/6 overflow-y-scroll relative flex-grow border-b border-zinc-500 min-w-full">
+  <div class="w-full h-full flex flex-col justify-between overflow-hidden">
+    <div class="h-full flex flex-col overflow-y-scroll">
       <%= for msg <- @messages do %>
-        <p class="px-3 py-2 gap-y-4 border-b snap-center" align="justify"><span class="font-semibold"><%= msg.sender%>:</span><br>
+        <p class="px-3 py-2 gap-y-4 border-b snap-center"><span class="font-semibold"><%= msg.sender%>:</span><br>
         <span><%= msg.content %></span></p>
       <% end %>
     </div>
-    <div class="py-2 row-span-1 flex self-end h-1/6">
-      <.form class ="px-3" phx-submit="send_message">
-          <input class="px-3 py-2" type="text" name="msg" required />
+    <div class="h-16">
+      <.form class ="flex flex-row items-center justify-between" phx-submit="send_message">
+          <input class="px-3 py-2 w-full" type="text" name="msg" required />
           <input type="hidden" name="sender" value={@current_user.email}>
           <input type="hidden" name="room" value={@activeRoom}>
-          <button class="bg-indigo-100 rounded-md self-end">Send to <%= @activeRoom %></button>
+          <button class="bg-indigo-100 rounded-md w-auto">Send to <%= @activeRoom %></button>
       </.form>
     </div>
   </div>
