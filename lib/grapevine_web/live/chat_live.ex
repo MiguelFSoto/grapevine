@@ -17,7 +17,7 @@ defmodule GrapevineWeb.ChatLive do
     end
 
     fullMsgList = Messages.message_list
-    fullRoomList = Rooms.room_list
+    fullRoomList = Rooms.user_rooms(socket.assigns.current_user.email)
     defParams = %{
       messages: [],
       msg: "",
@@ -45,7 +45,7 @@ defmodule GrapevineWeb.ChatLive do
     %{name: name, members: [members]}
     |> Rooms.create_room
 
-    fullRoomList = Rooms.room_list
+    fullRoomList = Rooms.user_rooms(socket.assigns.current_user.email)
     nextParams = %{ rooms: fullRoomList, name: "" }
     {:noreply, assign(socket, nextParams)}
   end

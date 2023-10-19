@@ -19,18 +19,21 @@
 
   <div class="col-span-10 max-h-screen relative flex-grow min-w-full">
     <div class="row-span-9 h-5/6 overflow-y-scroll relative flex-grow border-b border-zinc-500 min-w-full">
+      <h1 class="px-3 py-2 font-bold"> <%= @activeRoom %></h1>
       <%= for msg <- @messages do %>
         <p class="px-3 py-2 gap-y-4 border-b snap-center" align="justify"><span class="font-semibold"><%= msg.sender%>:</span><br>
         <span><%= msg.content %></span></p>
       <% end %>
     </div>
     <div class="py-2 row-span-1 flex self-end h-1/6">
+      <%= if @activeRoom != "" do %>
       <.form class ="px-3" phx-submit="send_message">
           <input class="px-3 py-2" type="text" name="msg" required />
           <input type="hidden" name="sender" value={@current_user.email}>
           <input type="hidden" name="room" value={@activeRoom}>
           <button class="bg-indigo-100 rounded-md self-end">Send to <%= @activeRoom %></button>
       </.form>
+      <% end %>
     </div>
   </div>
 </div>
