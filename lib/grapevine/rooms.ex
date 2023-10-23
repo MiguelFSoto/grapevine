@@ -29,7 +29,7 @@ defmodule Grapevine.Rooms do
   Returns a list of the users in a given room
   """
   def room_users(room) do
-    query = from(Room, where: [name: ^room], select: [:members])
+    query = from(r in Room, where: [name: ^room], select: r.members)
     Repo.all(query)
   end
 
@@ -48,5 +48,12 @@ defmodule Grapevine.Rooms do
     %Room{}
     |> Room.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def add_room_member(email, room) do
+    [memList] = room_users(room)
+    newUserList = [email | memList]
+    query = from(Room, where: [name: ^room] )
+    |> Repo.update_all(set: [members: newUserList])
   end
 end
