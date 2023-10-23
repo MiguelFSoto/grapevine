@@ -39,3 +39,7 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+window.addEventListener(
+    "phx:roomSelected",
+    e => document.getElementById("memButton").style.display = "block"
+);

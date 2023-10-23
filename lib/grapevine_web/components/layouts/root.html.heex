@@ -8,8 +8,10 @@
       <%= assigns[:page_title] || "Grapevine" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" phx-track-static-rel="stylesheet" />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
   </head>
   <body class="bg-white antialiased  overflow-y-scroll">
     <%= @inner_content %>
