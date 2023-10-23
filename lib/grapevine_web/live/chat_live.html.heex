@@ -1,39 +1,103 @@
 <div class="divide-x divide-zinc-500 grid grid-rows-10 grid-cols-10 grid-flow-col relative flex-grow">
   <div class="row-span-10 col-span-3 border-b">
-    <h1 class="px-3 py-2 font-semibold">Rooms</h1>
-    <div class="px-3">
-      <%= for room <- @rooms do %>
-        <div phx-click="select_room" phx-value-name={room.name}>
-          <p><%= room.name %></p>
+    <div class="flex items-center">
+      <h1 class="px-3 py-2 font-semibold">Rooms</h1>
+      <div class="">
+        <!-- Modal toggle -->
+        <button data-modal-target="roomModal" data-modal-toggle="roomModal"
+          class="align-center block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-1.5 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button">
+          +
+        </button>
+
+        <!-- Main modal -->
+        <div id="roomModal" tabindex="-1" aria-hidden="true"
+          class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <.form class="" phx-submit="create_room">
+                  <input class="px-3 py-2" type="text" name="name" required />
+                  <input type="hidden" name="members" value={@current_user.email}>
+                  <button class="bg-indigo-100 rounded-md self-end" data-modal-toggle="roomModal">Create</button>
+                </.form>
+              </div>
+            </div>
+          </div>
         </div>
-      <% end %>
-    </div>
-    <div class="px-3 self-end">
-      <.form class ="" phx-submit="create_room">
+
+        <%!-- <.form class="" phx-submit="create_room">
           <input class="px-3 py-2" type="text" name="name" required />
           <input type="hidden" name="members" value={@current_user.email}>
           <button class="bg-indigo-100 rounded-md self-end">Create</button>
-      </.form>
+          </.form> --%>
+      </div>
     </div>
+    <div class="px-3">
+      <%= for room <- @rooms do %>
+        <div class="hover:bg-zinc-200" phx-click="select_room" phx-value-name={room.name}>
+          <h3>
+            <%= room.name %>
+          </h3>
+        </div>
+        <% end %>
+    </div>
+
   </div>
 
-  <div class="col-span-10 max-h-screen relative flex-grow min-w-full">
+  <div class="col-span-10 max-h-screen relative flex-grow items-center min-w-full">
     <div class="row-span-9 h-5/6 overflow-y-scroll relative flex-grow border-b border-zinc-500 min-w-full">
-      <h1 class="px-3 py-2 font-bold"> <%= @activeRoom %></h1>
-      <%= for msg <- @messages do %>
-        <p class="px-3 py-2 gap-y-4 border-b snap-center" align="justify"><span class="font-semibold"><%= msg.sender%>:</span><br>
-        <span><%= msg.content %></span></p>
-      <% end %>
+      <%= if @activeRoom !="" do %>
+        <div class="flex items-center">
+          <h1 class="px-3 py-2 font-bold">
+            <%= @activeRoom %>
+          </h1>
+        </div>
+        <% end %>
+        <button data-modal-target="addModal" data-modal-toggle="addModal"
+              class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-1.5 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              type="button">
+              +
+            </button>
+          <div id="addModal" tabindex="-1" aria-hidden="true"
+            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative w-full max-w-2xl max-h-full">
+              <!-- Modal content -->
+              <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                  <.form class="" phx-submit="add_member">
+                    <input class="px-3 py-2" type="text" name="email" required />
+                    <input type="hidden" name="room" value="">
+                    <button class="bg-indigo-100 rounded-md self-end" data-modal-toggle="addModal">Add to room</button>
+                  </.form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <%= for msg <- @messages do %>
+            <p class="px-3 py-2 gap-y-4 border-b snap-center" align="justify"><span class="font-semibold">
+                <%= msg.sender%>:
+              </span><br>
+              <span>
+                <%= msg.content %>
+              </span>
+            </p>
+            <% end %>
     </div>
+
     <div class="py-2 row-span-1 flex self-end h-1/6">
-      <%= if @activeRoom != "" do %>
-      <.form class ="px-3" phx-submit="send_message">
+      <%= if @activeRoom !="" do %>
+        <.form class="px-3" phx-submit="send_message">
           <input class="px-3 py-2" type="text" name="msg" required />
           <input type="hidden" name="sender" value={@current_user.email}>
           <input type="hidden" name="room" value={@activeRoom}>
-          <button class="bg-indigo-100 rounded-md self-end">Send to <%= @activeRoom %></button>
-      </.form>
-      <% end %>
+          <button class="bg-indigo-100 rounded-md self-end">Send</button>
+        </.form>
+        <% end %>
     </div>
   </div>
 </div>

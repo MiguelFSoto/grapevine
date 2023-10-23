@@ -56,6 +56,11 @@ defmodule GrapevineWeb.ChatLive do
     {:noreply, assign(socket, nextParams)}
   end
 
+  def handle_event("add_member", %{ email: email, room: room }, socket) do
+    nextParams = %{ addMemberFlag: true }
+    {:noreply, assign(socket, nextParams)}
+  end
+
   def handle_info({:updated_msg, messages}, socket) do
     nextParams = %{ messages: messages, msg: "" }
     {:noreply, assign(socket, nextParams)}
